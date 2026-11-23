@@ -17,7 +17,7 @@ import sqlite_vec
 from app.config import (
     EMBEDDING_DIMENSIONS, EMBEDDING_MAX_TOKENS, EMBEDDING_MODEL,
     RAG_DB, RAG_DOCUMENT_IDS, RAG_SOURCE, RAG_TOP_K, RAG_TREE, get_api_key,
-    RAG_GRAPH, GRAPH_START_K, GRAPH_HOPS, GRAPH_MAX_RESULTS,
+    RAG_GRAPH, GRAPH_START_K, GRAPH_HOPS, GRAPH_MAX_RESULTS, OUTLINE_SEED_K,
 )
 
 
@@ -184,6 +184,30 @@ def search_graph(query: str) -> dict:
     return {"seeds": results, "expanded": expanded[:max(0, GRAPH_MAX_RESULTS - len(results))],
             "max_hops": GRAPH_HOPS}
 
+
+
+def search_outline(query: str) -> dict:
+    """発展: ベクトル検索の上位ページの本文と、ヒットした章ごとのページ一覧（タイトルのみ）を返す。
+
+    検索で入口を見つけ、同じ章の他のページはTreeのように目次から選んで読めるようにする。
+    """
+    hits = search(query)
+    pages = load_pages(RAG_SOURCE)
+    seeds = hits[:OUTLINE_SEED_K]
+    seed_ids = {hit["page_id"] for hit in seeds}
+    outline, seen = [], set()
+    for hit in hits:
+        key = (hit["document_id"], hit["section"])
+        if key in seen:
+            continue
+        seen.add(key)
+        outline.append({
+            "document_title": hit["document_title"], "section": hit["section"],
+            "pages": [{"page_id": p["page_id"], "page": p["page"], "title": p["title"],
+                       "fetched": p["page_id"] in seed_ids}
+                      for p in pages if (p["document_id"], p["section"]) == key],
+        })
+    return {"seeds": seeds, "outline": outline}
 
 
 def run_full_context(agent, question: str, model, instructions: str, prompt_template: str):

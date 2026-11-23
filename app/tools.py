@@ -126,3 +126,21 @@ def search_graph(query: str) -> str:
         return json.dumps({"error": str(e)}, ensure_ascii=False)
     except APIError as e:
         return json.dumps({"error": api_error_message(e.code)}, ensure_ascii=False)
+
+
+def search_outline(query: str) -> str:
+    """資料を検索し、上位ページの本文と、ヒットした章のページ一覧（タイトルのみ）を返す。
+
+    queryに調べたい内容を指定する。章をまたぐ質問や、複数のページに分かれた説明を探すときに使う。
+    一覧で「fetched: false」のページが必要なら、そのpage_idをbrowse_treeに渡して本文を読む。
+    """
+    import sqlite3
+    from google.genai.errors import APIError
+    from app.retrieval import search_outline as search
+
+    try:
+        return json.dumps(search(query), ensure_ascii=False)
+    except (ValueError, OSError, sqlite3.Error) as e:
+        return json.dumps({"error": str(e)}, ensure_ascii=False)
+    except APIError as e:
+        return json.dumps({"error": api_error_message(e.code)}, ensure_ascii=False)
