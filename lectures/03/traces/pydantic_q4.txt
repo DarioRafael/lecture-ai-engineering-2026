@@ -1,0 +1,13 @@
+[model] gemini-3.5-flash-lite
+申し訳ありません。「RAG」という用語は現在の用語集には登録されていないようです。そのため、講座の定義に沿った正確な回答をお伝えすることができません。
+
+（関連する情報として、第2回のファインチューニングの解説では「最新の事実を覚えさせる用途には、ツールやRAGで外部データを参照させるほうが向くことが多い」という言及があります。）
+
+第2回
+
+--- trace ---
+[tool call]   search_glossary({'query': 'RAG'})
+[tool return] search_glossary -> [{"term": "ファインチューニング", "lecture": 2, "definition": "事前学習済みモデルを、特定のタスクや形式に合ったデータで追加学習させること。出力の形式や口調、特定ドメインの振る舞いを身につけさせるの…
+[tool call]   search_glossary({'query': 'RAG'})
+[tool return] search_glossary -> [{"term": "ファインチューニング", "lecture": 2, "definition": "事前学習済みモデルを、特定のタスクや形式に合ったデータで追加学習させること。出力の形式や口調、特定ドメインの振る舞いを身につけさせるの…
+[usage] RunUsage(cost=Decimal('0.0007950'), details={'text_prompt_tokens': 1650}, input_text_tokens=1650, input_tokens=1650, output_tokens=120, requests=3, tool_calls=2)

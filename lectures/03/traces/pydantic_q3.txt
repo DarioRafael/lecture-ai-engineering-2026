@@ -1,0 +1,12 @@
+[model] gemini-3.5-flash-lite
+第2回の内容から確認問題をお出しします！
+
+**問題：**
+「Hugging Face Hub」の意味は何ですか？
+
+（第2回）
+
+--- trace ---
+[tool call]   make_quiz({'lecture': 2})
+[tool return] make_quiz -> {"question": "「Hugging Face Hub」の意味は？", "answer": "公開されたモデルやデータセットを共有・ダウンロードできるプラットフォーム。オープンウェイトのモデルを入手したり、LoRAアダプタを公開した…
+[usage] RunUsage(cost=Decimal('0.0003935'), details={'text_prompt_tokens': 920}, input_text_tokens=920, input_tokens=920, output_tokens=47, requests=2, tool_calls=1)
